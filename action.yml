@@ -1,0 +1,50 @@
+name: 'Altern Open Data Compiler'
+description: 'Validate and build awesome list from YAML data files'
+author: 'alternbits'
+branding:
+  icon: 'list'
+  color: 'blue'
+
+inputs:
+  data-dir:
+    description: 'Directory containing data YAML files'
+    required: false
+    default: 'data'
+  meta-dir:
+    description: 'Directory containing meta/info.yml and meta/categories.yml'
+    required: false
+    default: 'meta'
+  fail-if-outdated:
+    description: 'Fail if the generated output file differs from the committed version'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.21'
+        cache: false
+
+    - name: Build compiler
+      shell: bash
+      run: go build -o opendata-compiler .
+      working-directory: ${{ github.action_path }}/compiler
+
+    - name: Run compiler
+      shell: bash
+      run: |
+        "${{ github.action_path }}/compiler/opendata-compiler" \
+          -data "${{ inputs.data-dir }}" \
+          -meta "${{ inputs.meta-dir }}"
+      working-directory: ${{ github.workspace }}
+
+    - name: Check output file is up to date
+      if: ${{ inputs.fail-if-outdated == 'true' }}
+      shell: bash
+      run: |
+        OUTPUT=$("${{ github.action_path }}/compiler/opendata-compiler" -print-out)
+        git diff --exit-code "$OUTPUT" || (echo "::error::$OUTPUT is out of date. Run the compiler locally and commit the changes." && exit 1)
+      working-directory: ${{ github.workspace }}

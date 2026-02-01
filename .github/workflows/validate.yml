@@ -18,10 +18,12 @@ jobs:
           go-version: "1.21"
           cache-dependency-path: compiler/go.sum
 
-      - name: Validate and compile
-        run: make run
+      - name: Build compiler
+        run: make build
 
-      - name: Check output file is up to date
+      - name: Validate and compile template
+        run: cd template && ../compiler/bin/compile
+
+      - name: Check template output is up to date
         run: |
-          OUTPUT=$(./compiler/bin/compile -print-out)
-          git diff --exit-code "$OUTPUT" || (echo "::error::$OUTPUT is out of date. Run: make run" && exit 1)
+          cd template && OUTPUT=$(../compiler/bin/compile -print-out) && git diff --exit-code "$OUTPUT" || (echo "::error::$OUTPUT is out of date. Run: make build && cd template && ../compiler/bin/compile" && exit 1)

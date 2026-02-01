@@ -9,7 +9,7 @@ build:
 	cd $(COMPILER_DIR) && go build -o bin/compile .
 
 run: build
-	./$(COMPILER_EXE)
+	cd template && ../$(COMPILER_EXE)
 
 clean:
 	rm -rf $(COMPILER_BIN)

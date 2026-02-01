@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/alternbits/awesome-altern/compiler/compile"
+	"github.com/alternbits/opendata/compiler/compile"
 	"gopkg.in/yaml.v3"
 )
 

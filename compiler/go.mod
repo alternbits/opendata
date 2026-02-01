@@ -1,4 +1,4 @@
-module github.com/alternbits/awesome-altern/compiler
+module github.com/alternbits/opendata/compiler
 
 go 1.21
 

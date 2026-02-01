@@ -13,8 +13,22 @@ func Render(info *Info, categories []Category, itemsByCategory map[string][]*Ite
 	b.WriteString("# ")
 	b.WriteString(info.Name)
 	b.WriteString("\n\n")
-	// Badge
-	if info.BadgeURL != "" && info.BadgeLink != "" {
+	// Badges
+	if len(info.Badges) > 0 {
+		for i, badge := range info.Badges {
+			if badge.URL != "" && badge.Link != "" {
+				if i > 0 {
+					b.WriteString(" ")
+				}
+				b.WriteString("[![Awesome](")
+				b.WriteString(badge.URL)
+				b.WriteString(")](")
+				b.WriteString(badge.Link)
+				b.WriteString(")")
+			}
+		}
+		b.WriteString("\n\n")
+	} else if info.BadgeURL != "" && info.BadgeLink != "" {
 		b.WriteString("[![Awesome](")
 		b.WriteString(info.BadgeURL)
 		b.WriteString(")](")

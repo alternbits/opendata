@@ -7,7 +7,8 @@ position_order:
   - ordinary
   - new
   - dead
-badge_url: https://awesome.re/badge.svg
-badge_link: https://awesome.re
+badges:
+  - url: https://awesome.re/badge.svg
+    link: https://awesome.re
 license: CC0
 contribute: CONTRIBUTING.md

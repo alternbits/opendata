@@ -1,12 +1,19 @@
 package compile
 
+// Badge is a single badge (image URL + link) for the readme header.
+type Badge struct {
+	URL  string `yaml:"url"`
+	Link string `yaml:"link"`
+}
+
 // Info is repo-level metadata from meta/info.yml.
 type Info struct {
 	Name          string   `yaml:"name"`
 	Description   string   `yaml:"description"`
 	PositionOrder []string `yaml:"position_order"`
-	BadgeURL      string   `yaml:"badge_url"`
-	BadgeLink     string   `yaml:"badge_link"`
+	Badges        []Badge  `yaml:"badges"`       // multiple badges (preferred)
+	BadgeURL      string   `yaml:"badge_url"`    // single badge (backward compat)
+	BadgeLink     string   `yaml:"badge_link"`   // single badge (backward compat)
 	License       string   `yaml:"license"`
 	Contribute    string   `yaml:"contribute"`
 }

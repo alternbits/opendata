@@ -2,12 +2,13 @@ package compile
 
 // Info is repo-level metadata from meta/info.yml.
 type Info struct {
-	Name        string `yaml:"name"`
-	Description string `yaml:"description"`
-	BadgeURL    string `yaml:"badge_url"`
-	BadgeLink   string `yaml:"badge_link"`
-	License     string `yaml:"license"`
-	Contribute  string `yaml:"contribute"`
+	Name          string   `yaml:"name"`
+	Description   string   `yaml:"description"`
+	PositionOrder []string `yaml:"position_order"`
+	BadgeURL      string   `yaml:"badge_url"`
+	BadgeLink     string   `yaml:"badge_link"`
+	License       string   `yaml:"license"`
+	Contribute    string   `yaml:"contribute"`
 }
 
 // Category is a single category from meta/categories.yml.
@@ -27,6 +28,7 @@ type Item struct {
 	Description   string   `yaml:"description"`
 	MainCategory  string   `yaml:"main_category"`
 	Categories    []string `yaml:"categories"`
+	Position      string   `yaml:"position"` // tier for ordering: featured, popular, ordinary, new, dead, etc.
 	onelinerValue string   // set after load: oneliner or online_description
 }
 

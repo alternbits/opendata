@@ -75,14 +75,35 @@ func escapeMarkdownBracket(s string) string {
 }
 
 // GroupByMainCategory builds category -> sorted items from full item set.
-func GroupByMainCategory(categories []Category, items map[string]*Item) map[string][]*Item {
+// If info.PositionOrder is non-empty, items are sorted by position tier (then by name within tier).
+// Unknown or empty position is treated as last tier. If PositionOrder is empty, sort by name only.
+func GroupByMainCategory(info *Info, categories []Category, items map[string]*Item) map[string][]*Item {
 	out := make(map[string][]*Item)
 	for _, item := range items {
 		out[item.MainCategory] = append(out[item.MainCategory], item)
 	}
+	positionIndex := make(map[string]int)
+	for i, p := range info.PositionOrder {
+		positionIndex[p] = i
+	}
+	lastIndex := len(info.PositionOrder)
 	for _, list := range out {
-		sort.Slice(list, func(i, j int) bool {
-			return strings.ToLower(list[i].Name) < strings.ToLower(list[j].Name)
+		sort.Slice(list, func(a, b int) bool {
+			if len(info.PositionOrder) == 0 {
+				return strings.ToLower(list[a].Name) < strings.ToLower(list[b].Name)
+			}
+			pi, oki := positionIndex[list[a].Position]
+			pj, okj := positionIndex[list[b].Position]
+			if !oki || list[a].Position == "" {
+				pi = lastIndex
+			}
+			if !okj || list[b].Position == "" {
+				pj = lastIndex
+			}
+			if pi != pj {
+				return pi < pj
+			}
+			return strings.ToLower(list[a].Name) < strings.ToLower(list[b].Name)
 		})
 	}
 	return out

@@ -1,6 +1,12 @@
 name: Awesome AI
 description: |
   A curated list of awesome AI tools, frameworks, and resources.
+position_order:
+  - featured
+  - popular
+  - ordinary
+  - new
+  - dead
 badge_url: https://awesome.re/badge.svg
 badge_link: https://awesome.re
 license: CC0

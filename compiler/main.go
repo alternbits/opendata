@@ -57,7 +57,7 @@ func run(dataDir, metaDir, outPath string) error {
 		return fmt.Errorf("validation failed: %d error(s)", len(errs))
 	}
 
-	byCategory := compile.GroupByMainCategory(categories, items)
+	byCategory := compile.GroupByMainCategory(info, categories, items)
 	md := compile.Render(info, categories, byCategory)
 	if err := os.WriteFile(outPath, []byte(md), 0644); err != nil {
 		return fmt.Errorf("write %s: %w", outPath, err)

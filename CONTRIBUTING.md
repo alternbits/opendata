@@ -19,7 +19,10 @@ This list is generated from YAML data. **Do not edit `readme.md` directly.**
 
 ## Config (`config.yml`)
 
-Optional **`config.yml`** in the project root can set **`output`** (filename or path) for the generated list. Default is `readme.md`; if `output` is non-empty, the compiler writes to that file instead. Example: `output: LIST.md`.
+Optional **`config.yml`** in the project root can set:
+
+- **`output`** (string): Filename or path for the generated list. Default is `readme.md`; if non-empty, the compiler writes to that file instead. Example: `output: LIST.md`.
+- **`review_links_enabled`** (boolean): If `true`, items with a **`review`** link in data YAML show it in the readme between the main link and the description as: `*[review](url)*`. Default is `false`.
 
 ## Data file format (`data/{slug}.yml`)
 
@@ -31,6 +34,7 @@ Optional **`config.yml`** in the project root can set **`output`** (filename or 
 - **main_category** (required): Must be an `id` from `meta/categories.yml`.
 - **categories** (optional): Additional category ids from `meta/categories.yml`.
 - **position** (optional): Tier for ordering within the category. Allowed values and their order are defined in `meta/info.yml` under `position_order` (e.g. `featured`, `popular`, `ordinary`, `new`, `dead`). Items with the same position are sorted by name. If omitted, the item is treated as the last tier. If `position_order` is omitted in meta, all items are sorted by name only.
+- **review** (optional): URL to a review. Shown only when **`review_links_enabled`** is `true` in `config.yml`, as `*[review](url)*` between the main link and the description.
 - **date_added** (optional): Date the entry was added, e.g. `2025-02-01` (ISO 8601).
 - **date_modified** (optional): Date the entry was last updated, e.g. `2025-02-01`.
 

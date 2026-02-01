@@ -49,7 +49,7 @@ func TestRender_containsTitleAndContents(t *testing.T) {
 	}
 	items["foo"].onelinerValue = "A tool."
 	byCat := GroupByMainCategory(info, categories, items)
-	md := Render(info, categories, byCat)
+	md := Render(info, categories, byCat, false)
 	if !strings.Contains(md, "# Awesome List") {
 		t.Error("output should contain title")
 	}
@@ -64,6 +64,34 @@ func TestRender_containsTitleAndContents(t *testing.T) {
 	}
 }
 
+func TestRender_reviewLinkWhenEnabled(t *testing.T) {
+	info := &Info{Name: "T", Description: "D"}
+	categories := []Category{{ID: "x", Name: "X"}}
+	items := map[string]*Item{
+		"a": {Name: "Foo", URL: "https://foo.com", MainCategory: "x", Review: "https://review.example/foo"},
+	}
+	items["a"].onelinerValue = "A tool."
+	byCat := GroupByMainCategory(info, categories, items)
+	md := Render(info, categories, byCat, true)
+	if !strings.Contains(md, "*[review](https://review.example/foo)*") {
+		t.Errorf("expected review link when enabled; got %q", md)
+	}
+}
+
+func TestRender_noReviewLinkWhenDisabled(t *testing.T) {
+	info := &Info{Name: "T", Description: "D"}
+	categories := []Category{{ID: "x", Name: "X"}}
+	items := map[string]*Item{
+		"a": {Name: "Foo", URL: "https://foo.com", MainCategory: "x", Review: "https://review.example/foo"},
+	}
+	items["a"].onelinerValue = "A tool."
+	byCat := GroupByMainCategory(info, categories, items)
+	md := Render(info, categories, byCat, false)
+	if strings.Contains(md, "[review]") {
+		t.Error("expected no review link when disabled")
+	}
+}
+
 func TestEscapeMarkdownBracket(t *testing.T) {
 	// escapeMarkdownBracket is unexported; test via Render with item name containing ]
 	info := &Info{Name: "T", Description: "D"}
@@ -73,7 +101,7 @@ func TestEscapeMarkdownBracket(t *testing.T) {
 	}
 	items["a"].onelinerValue = "Desc."
 	byCat := GroupByMainCategory(info, categories, items)
-	md := Render(info, categories, byCat)
+	md := Render(info, categories, byCat, false)
 	if !strings.Contains(md, `\]`) {
 		t.Error("expected bracket in name to be escaped")
 	}

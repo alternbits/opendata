@@ -7,7 +7,8 @@ import (
 )
 
 // Render builds the full readme markdown.
-func Render(info *Info, categories []Category, itemsByCategory map[string][]*Item) string {
+// When reviewLinksEnabled is true, items with a non-empty Review link show "*[review](url)*" between the main link and the description.
+func Render(info *Info, categories []Category, itemsByCategory map[string][]*Item, reviewLinksEnabled bool) string {
 	var b strings.Builder
 	// Title
 	b.WriteString("# ")
@@ -59,7 +60,13 @@ func Render(info *Info, categories []Category, itemsByCategory map[string][]*Ite
 			b.WriteString(escapeMarkdownBracket(item.Name))
 			b.WriteString("](")
 			b.WriteString(item.URL)
-			b.WriteString(") - ")
+			b.WriteString(")")
+			if reviewLinksEnabled && strings.TrimSpace(item.Review) != "" {
+				b.WriteString(" *[review](")
+				b.WriteString(item.Review)
+				b.WriteString(")*")
+			}
+			b.WriteString(" - ")
 			b.WriteString(OnelinerSuffix(item.OnelinerValue()))
 			b.WriteString("\n")
 		}

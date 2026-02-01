@@ -12,7 +12,8 @@ import (
 )
 
 type config struct {
-	Output string `yaml:"output"`
+	Output            string `yaml:"output"`
+	ReviewLinksEnabled bool   `yaml:"review_links_enabled"`
 }
 
 func main() {
@@ -82,8 +83,13 @@ func run(dataDir, metaDir, outPath string) error {
 		return fmt.Errorf("validation failed: %d error(s)", len(errs))
 	}
 
+	reviewLinksEnabled := false
+	if cfg := loadConfig(filepath.Join(cwd, "config.yml")); cfg != nil {
+		reviewLinksEnabled = cfg.ReviewLinksEnabled
+	}
+
 	byCategory := compile.GroupByMainCategory(info, categories, items)
-	md := compile.Render(info, categories, byCategory)
+	md := compile.Render(info, categories, byCategory, reviewLinksEnabled)
 	if err := os.WriteFile(outPath, []byte(md), 0644); err != nil {
 		return fmt.Errorf("write %s: %w", outPath, err)
 	}

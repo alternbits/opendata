@@ -35,7 +35,9 @@ type Item struct {
 	Description   string   `yaml:"description"`
 	MainCategory  string   `yaml:"main_category"`
 	Categories    []string `yaml:"categories"`
-	Position      string   `yaml:"position"` // tier for ordering: featured, popular, ordinary, new, dead, etc.
+	Position      string   `yaml:"position"`      // tier for ordering: featured, popular, ordinary, new, dead, etc.
+	DateAdded     string   `yaml:"date_added"`    // optional, e.g. 2025-02-01
+	DateModified  string   `yaml:"date_modified"`  // optional, e.g. 2025-02-01
 	onelinerValue string   // set after load: oneliner or online_description
 }
 

@@ -16,6 +16,7 @@ type Info struct {
 	BadgeLink     string   `yaml:"badge_link"`   // single badge (backward compat)
 	License       string   `yaml:"license"`
 	Contribute    string   `yaml:"contribute"`
+	Footer        string   `yaml:"footer"` // optional markdown content for footer section
 }
 
 // Category is a single category from meta/categories.yml.

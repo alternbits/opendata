@@ -66,7 +66,7 @@ func Render(info *Info, categories []Category, itemsByCategory map[string][]*Ite
 		b.WriteString("\n")
 	}
 	// Footer
-	if info.License != "" || info.Contribute != "" {
+	if info.License != "" || info.Contribute != "" || info.Footer != "" {
 		b.WriteString("---\n\n")
 		if info.License != "" {
 			b.WriteString("**License**: ")
@@ -78,7 +78,11 @@ func Render(info *Info, categories []Category, itemsByCategory map[string][]*Ite
 			b.WriteString(info.Contribute)
 			b.WriteString("](")
 			b.WriteString(info.Contribute)
-			b.WriteString(") for contribution guidelines.\n")
+			b.WriteString(") for contribution guidelines.\n\n")
+		}
+		if info.Footer != "" {
+			b.WriteString(strings.TrimSpace(info.Footer))
+			b.WriteString("\n")
 		}
 	}
 	return b.String()

@@ -12,3 +12,5 @@ badges:
     link: https://awesome.re
 license: CC0
 contribute: CONTRIBUTING.md
+footer: |
+  Maintained by the community. Found something awesome? [Add it](CONTRIBUTING.md).

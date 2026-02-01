@@ -21,6 +21,7 @@ jobs:
       - name: Validate and compile
         run: make run
 
-      - name: Check readme.md is up to date
+      - name: Check output file is up to date
         run: |
-          git diff --exit-code readme.md || (echo "::error::readme.md is out of date. Run: make run" && exit 1)
+          OUTPUT=$(./compiler/bin/compile -print-out)
+          git diff --exit-code "$OUTPUT" || (echo "::error::$OUTPUT is out of date. Run: make run" && exit 1)

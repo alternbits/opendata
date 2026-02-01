@@ -19,6 +19,10 @@ inputs:
     required: false
     default: 'true'
 
+outputs:
+  output-path:
+    description: 'Absolute path to the generated readme file'
+
 runs:
   using: 'composite'
   steps:
@@ -41,10 +45,18 @@ runs:
           -meta "${{ inputs.meta-dir }}"
       working-directory: ${{ github.workspace }}
 
+    - name: Set output path
+      id: output-path
+      shell: bash
+      run: |
+        OUTPUT=$("${{ github.action_path }}/compiler/opendata-compiler" -print-out)
+        echo "output-path=$OUTPUT" >> $GITHUB_OUTPUT
+      working-directory: ${{ github.workspace }}
+
     - name: Check output file is up to date
       if: ${{ inputs.fail-if-outdated == 'true' }}
       shell: bash
       run: |
-        OUTPUT=$("${{ github.action_path }}/compiler/opendata-compiler" -print-out)
+        OUTPUT="${{ steps.output-path.outputs.output-path }}"
         git diff --exit-code "$OUTPUT" || (echo "::error::$OUTPUT is out of date. Run the compiler locally and commit the changes." && exit 1)
       working-directory: ${{ github.workspace }}

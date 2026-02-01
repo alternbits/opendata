@@ -1,21 +1,33 @@
-# Awesome AI
+# Altern Open Data
 
-[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+Data-driven awesome list. Edit YAML, run the compiler, get markdown.
 
-A curated list of awesome AI tools, frameworks, and resources.
+## What it is
 
-## Contents
+- Curated list content lives in **YAML**, not in the readme.
+- A **Go compiler** reads that YAML and writes the list (e.g. `readme.md` or whatever you set).
+- You change **data** and **meta**; the readme is generated.
 
-- [Tools](#tools)
-- [Frameworks](#frameworks)
-- [Resources](#resources)
+## Layout
 
-## Tools
+- **`data/`** — One `.yml` per item. Filename = slug (e.g. `altern.ai.yml`). Fields: name, slug, url, oneliner, main_category, position, date_added, etc.
+- **`meta/`** — `info.yml` (title, description, badges, footer, position_order) and `categories.yml` (category id + name).
+- **`config.yml`** — Optional. Set **`output`** to change the generated filename (default `readme.md`).
+- **`compiler/`** — Go app. Builds from `data/` + `meta/`, validates, then writes the list.
 
-- [Altern](https://altern.ai) - AI-powered development assistant.
+## How to run
 
----
+```bash
+make run
+```
 
-**License**: CC0
+Builds the compiler and writes the list to the path from `config.yml` (or `readme.md`).  
+Or: `make build` then `./compiler/bin/compile`. Use `-data`, `-meta`, `-out` to override paths.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+## CI
+
+GitHub Action on push/PR: runs the compiler and fails if the generated file is out of date. Uses **`config.yml`** for the output path.
+
+## Docs
+
+- **CONTRIBUTING.md** — Data format, meta fields, how to add entries and badges.

@@ -38,7 +38,7 @@ func Render(info *Info, categories []Category, itemsByCategory map[string][]*Ite
 	// Intro
 	b.WriteString(strings.TrimSpace(info.Description))
 	b.WriteString("\n\n")
-	// Table of contents
+	// Table of contents (categories only)
 	b.WriteString("## Contents\n\n")
 	for _, c := range categories {
 		anchor := "#" + strings.ToLower(c.ID)

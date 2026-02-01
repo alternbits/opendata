@@ -22,6 +22,7 @@ inputs:
 outputs:
   output-path:
     description: 'Absolute path to the generated readme file'
+    value: ${{ steps.output-path.outputs.output-path }}
 
 runs:
   using: 'composite'

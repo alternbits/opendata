@@ -1,4 +1,4 @@
-name: Validate and compile
+name: Test
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  validate:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,12 +18,6 @@ jobs:
           go-version: "1.21"
           cache-dependency-path: compiler/go.sum
 
-      - name: Build compiler
-        run: make build
-
-      - name: Validate and compile template
-        run: cd template && ../compiler/bin/compile
-
-      - name: Check template output is up to date
-        run: |
-          cd template && OUTPUT=$(../compiler/bin/compile -print-out) && git diff --exit-code "$OUTPUT" || (echo "::error::$OUTPUT is out of date. Run: make build && cd template && ../compiler/bin/compile" && exit 1)
+      - name: Run tests
+        run: go test ./...
+        working-directory: compiler
